@@ -1,58 +1,105 @@
-import React, { useEffect, useState } from "react";
-import { FirebaseLogin } from "./components/FirebaseLogin";
-import { auth } from "./firebaseConfig";
-import { onAuthStateChanged, User } from "firebase/auth";
-import { ChatContainer } from "./components/ChatContainer";
-import { JarvisScreen } from "./components/JarvisScreen";
-import { WelcomeScreen } from "./components/WelcomeScreen";
-import { googleAIService } from "./services/googleAI";
+import React from 'react';
+import { AppProvider } from './contexts/AppContext';
+import { useAuth } from './hooks/useAuth';
+import { FirebaseLogin } from './components/auth/FirebaseLogin';
+import { ChatContainer } from './components/chat/ChatContainer';
+import { JarvisScreen } from './components/JarvisScreen';
+import { WelcomeScreen } from './components/WelcomeScreen';
+import { useApp } from './contexts/AppContext';
 
-const App: React.FC = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [screen, setScreen] = useState<'welcome' | 'chat' | 'jarvis'>('welcome');
+const AppContent: React.FC = () => {
+  const { user, loading, error } = useAuth();
+  const { currentScreen, setCurrentScreen } = useApp();
 
-  useEffect(() => {
-    console.log('🔐 Inicializando autenticação Firebase...');
-    
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      console.log('👤 Estado de autenticação mudou:', user ? `Usuário logado: ${user.uid}` : 'Usuário não logado');
-      
-      setUser(user);
-      
-      if (user) {
-        try {
-          console.log('🚀 Inicializando serviço para usuário:', user.uid);
-          console.log('📧 Email do usuário:', user.email);
-          console.log('🔑 Token de autenticação válido:', !!user.uid);
-          
-          // Inicializar o serviço do Google AI com o ID do usuário
-          await googleAIService.initialize(user.uid);
-          console.log('✅ Serviço inicializado com sucesso');
-        } catch (error) {
-          console.error('❌ Erro ao inicializar serviço:', error);
-          // Mesmo com erro, permite usar o app
-        }
-      } else {
-        console.log('👤 Usuário não autenticado, mostrando tela de login');
-      }
-    });
-    
-    return () => unsubscribe();
-  }, []);
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+            <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+          </div>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">
+            Carregando...
+          </h2>
+          <p className="text-gray-600">
+            Inicializando o Amigo Bíblico
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+          </div>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">
+            Erro de Conexão
+          </h2>
+          <p className="text-gray-600 mb-4">
+            {error}
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Tentar Novamente
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (!user) {
     return <FirebaseLogin />;
   }
 
-  if (screen === 'jarvis') {
-    return <JarvisScreen onNavigateToChat={() => setScreen('chat')} onNavigateToWelcome={() => setScreen('welcome')} />;
-  }
+  const navigationProps = {
+    onNavigateToWelcome: () => setCurrentScreen('welcome'),
+    onNavigateToChat: () => setCurrentScreen('chat'),
+    onNavigateToJarvis: () => setCurrentScreen('jarvis')
+  };
 
-  if (screen === 'chat') {
-    return <ChatContainer onNavigateToJarvis={() => setScreen('jarvis')} onNavigateToWelcome={() => setScreen('welcome')} />;
+  switch (currentScreen) {
+    case 'jarvis':
+      return (
+        <JarvisScreen
+          {...navigationProps}
+        />
+      );
+    
+    case 'chat':
+      return (
+        <ChatContainer
+          user={user}
+          currentScreen={currentScreen}
+          {...navigationProps}
+        />
+      );
+    
+    case 'welcome':
+    default:
+      return (
+        <WelcomeScreen
+          user={user}
+          currentScreen={currentScreen}
+          {...navigationProps}
+        />
+      );
   }
+};
 
-  return <WelcomeScreen onNavigateToChat={() => setScreen('chat')} onNavigateToJarvis={() => setScreen('jarvis')} />;
+const App: React.FC = () => {
+  return (
+    <AppProvider>
+      <AppContent />
+    </AppProvider>
+  );
 };
 
 export default App;
