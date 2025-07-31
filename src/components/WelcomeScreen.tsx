@@ -1,121 +1,176 @@
-import React, { useState } from 'react';
-import { Bot } from 'lucide-react';
-import { ChatInput } from './ChatInput';
-import { Header } from './Header';
-import { googleAIService } from '../services/googleAI';
+import React from 'react';
+import { Header } from './layout/Header';
+import { Button } from './ui/Button';
+import { Card } from './ui/Card';
+import { MessageCircle, Brain, BookOpen, Users, Sparkles, Shield } from 'lucide-react';
 
 interface WelcomeScreenProps {
+  user: {
+    email: string | null;
+    displayName?: string | null;
+    photoURL?: string | null;
+  };
   onNavigateToChat: () => void;
   onNavigateToJarvis: () => void;
+  onNavigateToWelcome: () => void;
+  currentScreen: 'welcome' | 'chat' | 'jarvis';
 }
 
-export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ 
-  onNavigateToChat, 
-  onNavigateToJarvis 
+export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
+  user,
+  onNavigateToChat,
+  onNavigateToJarvis,
+  onNavigateToWelcome,
+  currentScreen
 }) => {
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  const handleLogoClick = () => {
-    setIsAnimating(true);
-    setTimeout(() => {
-      onNavigateToJarvis();
-    }, 200);
-  };
-
-  const handleSendMessage = async (messageContent: string) => {
-    if (!messageContent.trim()) return;
-    
-    // Enviar mensagem e ir para o chat
-    try {
-      await googleAIService.sendMessage(messageContent);
-      onNavigateToChat();
-    } catch (error) {
-      console.error('Erro ao enviar mensagem:', error);
+  const features = [
+    {
+      icon: Brain,
+      title: 'IA Inteligente',
+      description: 'Respostas precisas baseadas em conhecimento bíblico sólido'
+    },
+    {
+      icon: BookOpen,
+      title: 'Estudos Bíblicos',
+      description: 'Explore passagens, contextos históricos e interpretações'
+    },
+    {
+      icon: Users,
+      title: 'Comunidade',
+      description: 'Conecte-se com outros estudantes da Bíblia'
+    },
+    {
+      icon: Shield,
+      title: 'Seguro e Privado',
+      description: 'Suas conversas são protegidas e confidenciais'
     }
-  };
+  ];
 
-  const getLogoClasses = () => {
-    const baseClasses = "w-36 h-36 sm:w-56 sm:h-56 md:w-64 md:h-64 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 rounded-full flex items-center justify-center mx-auto jarvis-glow backdrop-blur-sm border border-cyan-400/30 cursor-pointer transition-all duration-200 hover:scale-105 hover:from-cyan-500/30 hover:to-blue-600/30 hover:border-cyan-300/50";
-    
-    return `${baseClasses} ${isAnimating ? 'scale-110' : ''}`;
-  };
+  const quickActions = [
+    {
+      title: 'Quem foi Jesus Cristo?',
+      description: 'Descubra a vida e ensinamentos de Jesus'
+    },
+    {
+      title: 'Os 10 Mandamentos',
+      description: 'Entenda os princípios fundamentais da lei mosaica'
+    },
+    {
+      title: 'Parábolas de Jesus',
+      description: 'Explore as histórias e lições de Jesus'
+    },
+    {
+      title: 'Apocalipse',
+      description: 'Estude o livro do Apocalipse e suas profecias'
+    }
+  ];
 
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 relative overflow-hidden">
-      {/* Efeito de grade tecnológica de fundo */}
-      <div className="absolute inset-0 tech-grid opacity-20" />
-      
-      {/* Header fixo */}
-      <Header 
-        onClearChat={() => {}}
-        onLogout={() => {}}
-        onShowHistory={() => {}}
-        messageCount={0}
-        showBackButton={false}
+    <div className="flex flex-col h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      <Header
+        user={user}
+        onNavigateToWelcome={onNavigateToWelcome}
+        onNavigateToChat={onNavigateToChat}
+        onNavigateToJarvis={onNavigateToJarvis}
+        currentScreen={currentScreen}
       />
       
-      {/* Container do conteúdo com scroll */}
-      <div className="flex flex-col flex-1 relative z-10 px-2 sm:px-4 md:px-8 overflow-hidden pb-20 sm:pb-24 md:pb-28">
-        <div className="flex-1 overflow-y-auto scrollbar-hide w-full max-w-2xl mx-auto p-2 sm:p-4 space-y-4">
-          <div className="flex flex-col items-center p-2 sm:p-4 relative overflow-hidden">
-            {/* Container principal centralizado */}
-            <div className="text-center relative z-10 flex flex-col items-center w-full max-w-xs sm:max-w-md md:max-w-lg pt-8 sm:pt-16">
-              
-              {/* Frase explicativa */}
-              <div className="mb-8 text-center">
-                <p className="text-cyan-300/80 text-xs sm:text-base font-medium leading-relaxed max-w-xs sm:max-w-sm mx-auto">
-                  Clique na logo abaixo para uma experiência imersiva de conversa contínua!
+      <div className="flex-1 overflow-y-auto p-6">
+        <div className="max-w-6xl mx-auto">
+          {/* Hero Section */}
+          <div className="text-center mb-12">
+            <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <MessageCircle className="w-10 h-10 text-white" />
+            </div>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+              Bem-vindo ao Amigo Bíblico
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+              Seu assistente inteligente para estudos bíblicos profundos e significativos
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button
+                onClick={onNavigateToChat}
+                size="lg"
+                icon={MessageCircle}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
+                Começar Conversa
+              </Button>
+              <Button
+                onClick={onNavigateToJarvis}
+                variant="outline"
+                size="lg"
+                icon={Sparkles}
+              >
+                Modo Jarvis
+              </Button>
+            </div>
+          </div>
+
+          {/* Features Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            {features.map((feature, index) => (
+              <Card key={index} className="text-center">
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <feature.icon className="w-6 h-6 text-blue-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600 text-sm">
+                  {feature.description}
                 </p>
+              </Card>
+            ))}
+          </div>
+
+          {/* Quick Actions */}
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              Tópicos Populares
+            </h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              {quickActions.map((action, index) => (
+                <Card key={index} className="cursor-pointer hover:shadow-lg transition-shadow">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    {action.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-4">
+                    {action.description}
+                  </p>
+                  <Button
+                    onClick={onNavigateToChat}
+                    variant="ghost"
+                    size="sm"
+                    className="text-blue-600 hover:text-blue-700"
+                  >
+                    Perguntar →
+                  </Button>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div className="bg-white rounded-lg p-6 shadow-sm">
+            <div className="grid md:grid-cols-3 gap-6 text-center">
+              <div>
+                <div className="text-3xl font-bold text-blue-600 mb-2">1000+</div>
+                <div className="text-gray-600">Usuários Ativos</div>
               </div>
-              
-              {/* Logo principal */}
-              <div className="relative mb-6 sm:mb-8">
-                <div 
-                  className={getLogoClasses()}
-                  onClick={handleLogoClick}
-                  title="Clique para acessar o sistema J.A.R.V.I.S"
-                >
-                  <Bot 
-                    size={56} 
-                    className="text-cyan-400 sm:w-20 sm:h-20 md:w-28 md:h-28" 
-                  />
-                </div>
-                
-                {/* Animações de pulso suave */}
-                <div className="absolute inset-0 rounded-full border border-cyan-400/20 animate-ping pointer-events-none" style={{ animationDuration: '3s' }} />
-                <div className="absolute inset-2 rounded-full border border-blue-400/10 animate-ping pointer-events-none" style={{ animationDuration: '2.5s', animationDelay: '0.5s' }} />
-                
-                {/* Círculos orbitais simples */}
-                <div className="absolute inset-0 animate-spin pointer-events-none" style={{ animationDuration: '20s' }}>
-                  <div className="absolute top-0 left-1/2 w-2 h-2 bg-cyan-400/60 rounded-full transform -translate-x-1/2 -translate-y-1" />
-                </div>
-                <div className="absolute inset-0 animate-spin pointer-events-none" style={{ animationDuration: '15s', animationDirection: 'reverse' }}>
-                  <div className="absolute top-1/2 right-0 w-1.5 h-1.5 bg-blue-400/60 rounded-full transform translate-x-1 -translate-y-1/2" />
-                </div>
+              <div>
+                <div className="text-3xl font-bold text-green-600 mb-2">50K+</div>
+                <div className="text-gray-600">Perguntas Respondidas</div>
               </div>
-              
-              {/* Título principal */}
-              <div className="mb-4 sm:mb-6">
-                <h1 className="text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-bold hologram-text text-gradient leading-none tracking-wider">
-                  J.A.R.V.I.S
-                </h1>
-              </div>
-              
-              {/* Status da conversa */}
-              <div className="flex items-center gap-2 text-xs text-cyan-400/50">
-                <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
-                <span>Sistema Online</span>
+              <div>
+                <div className="text-3xl font-bold text-purple-600 mb-2">24/7</div>
+                <div className="text-gray-600">Disponível</div>
               </div>
             </div>
           </div>
         </div>
-        
-        {/* Input na parte inferior */}
-        <ChatInput 
-          onSendMessage={handleSendMessage}
-          isLoading={false}
-          onInputFocusScroll={() => {}}
-        />
       </div>
     </div>
   );

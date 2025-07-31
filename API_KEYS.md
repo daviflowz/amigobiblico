@@ -1,99 +1,101 @@
-# 🔑 Configuração de APIs para Jarvis Avançado
+# 🔑 Configuração de APIs para Amigo Bíblico
+
+## Firebase Configuration
+
+### Projeto: bibliadivina
+- **Project ID**: bibliadivina
+- **Auth Domain**: bibliadivina.firebaseapp.com
+- **Storage Bucket**: bibliadivina.appspot.com
+- **Messaging Sender ID**: 850542229344
+- **App ID**: 1:850542229344:web:77fc34d559dd5b8b903e02
 
 ## APIs Necessárias
 
-### 1. **NewsAPI** (Notícias em tempo real)
-- **URL**: https://newsapi.org/
-- **Chave**: `YOUR_NEWS_API_KEY`
-- **Uso**: Buscar notícias atualizadas
-- **Limite**: 100 requests/dia (gratuito)
+### 1. **Google AI (Generative AI)**
+- **URL**: https://ai.google.dev/
+- **Chave**: `AIzaSyDjunWvcLsfzl5ZFrLVcZh7YGC22DyHm4E` (já configurada)
+- **Uso**: Chat inteligente e respostas bíblicas
+- **Limite**: Configurado no serviço
 
-### 2. **OpenWeatherMap** (Clima em tempo real)
-- **URL**: https://openweathermap.org/
-- **Chave**: `YOUR_WEATHER_API_KEY`
-- **Uso**: Dados de temperatura, umidade, vento
-- **Limite**: 1000 requests/dia (gratuito)
-
-### 3. **Google Custom Search** (Pesquisa web)
+### 2. **Google Custom Search** (Pesquisa web)
 - **URL**: https://developers.google.com/custom-search
 - **Chave**: `AIzaSyDjunWvcLsfzl5ZFrLVcZh7YGC22DyHm4E` (já configurada)
 - **Uso**: Pesquisa web em tempo real
 - **Limite**: 100 requests/dia (gratuito)
 
-### 4. **CoinGecko** (Criptomoedas)
-- **URL**: https://www.coingecko.com/en/api
-- **Chave**: Não necessária (gratuito)
-- **Uso**: Preços de Bitcoin e outras criptos
-- **Limite**: 50 requests/minuto
+### 3. **Firebase Authentication**
+- **Projeto**: bibliadivina
+- **Métodos**: Google, Anônimo
+- **Configuração**: Automática
 
-### 5. **Twelve Data** (Ações)
-- **URL**: https://twelvedata.com/
-- **Chave**: `YOUR_STOCK_API_KEY`
-- **Uso**: Dados de ações e índices
-- **Limite**: 800 requests/dia (gratuito)
-
-### 6. **TomTom** (Trânsito)
-- **URL**: https://developer.tomtom.com/
-- **Chave**: `YOUR_TRAFFIC_API_KEY`
-- **Uso**: Informações de trânsito
-- **Limite**: 2500 requests/dia (gratuito)
+### 4. **Firestore Database**
+- **Projeto**: bibliadivina
+- **Regras**: Configuradas para usuários autenticados
+- **Índices**: Otimizados para consultas
 
 ## Como Configurar
 
-1. **Registre-se** nas APIs necessárias
-2. **Obtenha as chaves** de cada serviço
-3. **Substitua** as chaves no arquivo `realTimeSearch.ts`
-4. **Teste** as funcionalidades
+1. **Firebase CLI**: Instalar e fazer login
+2. **Selecionar projeto**: `firebase use bibliadivina`
+3. **Deploy**: `firebase deploy`
+4. **Testar**: Verificar autenticação e chat
 
-## Funcionalidades Avançadas
+## Funcionalidades Principais
 
-### 🌡️ Clima em Tempo Real
-```
-"quantos graus está fazendo em São Paulo?"
-"temperatura em Rio de Janeiro"
-"clima em Brasília"
-```
+### 🔐 Autenticação
+- Login com Google
+- Login anônimo
+- Persistência de sessão
 
-### 📰 Notícias Atualizadas
-```
-"me dê uma notícia sobre tecnologia"
-"última notícia do Brasil"
-"notícias sobre economia"
-```
+### 💬 Chat Inteligente
+- Integração com Google AI
+- Histórico de conversas
+- Cache de respostas
 
-### ₿ Criptomoedas
-```
-"preço do bitcoin"
-"valor do ethereum"
-"criptomoedas hoje"
-```
+### 📚 Estudos Bíblicos
+- Perguntas sobre a Bíblia
+- Contexto histórico
+- Interpretações
 
 ### 🔍 Pesquisa Web
-```
-"pesquise sobre inteligência artificial"
-"busque informações sobre React"
-"procure sobre física quântica"
-```
-
-### 📊 Ações (quando configurado)
-```
-"preço da Petrobras"
-"valor da Vale"
-"índice Bovespa"
-```
+- Busca de informações
+- Fontes confiáveis
+- Resultados relevantes
 
 ## Status Atual
 
+- ✅ **Firebase Auth**: Configurado
+- ✅ **Firestore**: Configurado
+- ✅ **Google AI**: Configurado
 - ✅ **Google Search**: Configurado
-- ❌ **NewsAPI**: Precisa de chave
-- ❌ **OpenWeatherMap**: Precisa de chave
-- ✅ **CoinGecko**: Funcionando
-- ❌ **Twelve Data**: Precisa de chave
-- ❌ **TomTom**: Precisa de chave
+- ✅ **Hosting**: Configurado
+
+## Deploy
+
+```bash
+# Instalar Firebase CLI
+npm install -g firebase-tools
+
+# Login
+firebase login
+
+# Selecionar projeto
+firebase use bibliadivina
+
+# Deploy
+firebase deploy
+```
+
+## URLs do Projeto
+
+- **Console Firebase**: https://console.firebase.google.com/project/bibliadivina
+- **Hosting**: https://bibliadivina.web.app
+- **Auth**: https://bibliadivina.firebaseapp.com
 
 ## Próximos Passos
 
-1. Configure as APIs necessárias
-2. Teste cada funcionalidade
-3. Ajuste os limites conforme necessário
-4. Implemente cache para otimizar performance 
+1. ✅ **Configurar Firebase**
+2. ✅ **Atualizar configurações**
+3. 🔄 **Fazer deploy**
+4. 🧪 **Testar funcionalidades**
+5. 🚀 **Lançar produção** 
