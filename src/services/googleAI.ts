@@ -14,7 +14,7 @@ import {
   serverTimestamp 
 } from 'firebase/firestore';
 
-const API_KEY = 'AIzaSyDjunWvcLsfzl5ZFrLVcZh7YGC22DyHm4E';
+const API_KEY = 'AIzaSyD13DkeUGToNyyGUHALPJ1BQRFMpca_bm8';
 
 const genAI = new GoogleGenerativeAI(API_KEY);
 
@@ -722,7 +722,7 @@ Pesquisa em tempo real via Google!`;
       
       console.log('Contexto da conversa:', context);
 
-      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+      const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
 
       const prompt = `
 Você é o **JARVIS**, um assistente de IA de última geração com capacidades avançadas.

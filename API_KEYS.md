@@ -13,13 +13,13 @@
 
 ### 1. **Google AI (Generative AI)**
 - **URL**: https://ai.google.dev/
-- **Chave**: `AIzaSyDjunWvcLsfzl5ZFrLVcZh7YGC22DyHm4E` (já configurada)
+- **Chave**: `AIzaSyD13DkeUGToNyyGUHALPJ1BQRFMpca_bm8` (configurada)
 - **Uso**: Chat inteligente e respostas bíblicas
 - **Limite**: Configurado no serviço
 
 ### 2. **Google Custom Search** (Pesquisa web)
 - **URL**: https://developers.google.com/custom-search
-- **Chave**: `AIzaSyDjunWvcLsfzl5ZFrLVcZh7YGC22DyHm4E` (já configurada)
+- **Chave**: `AIzaSyD13DkeUGToNyyGUHALPJ1BQRFMpca_bm8` (configurada)
 - **Uso**: Pesquisa web em tempo real
 - **Limite**: 100 requests/dia (gratuito)
 

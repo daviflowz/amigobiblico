@@ -59,7 +59,7 @@ npm run deploy
 ### Environment Variables
 Crie um arquivo `.env` na raiz do projeto:
 ```
-REACT_APP_GOOGLE_API_KEY=AIzaSyBvI-LCxl8u3tFjKZOIaNcpZr499pcVD9Q
+REACT_APP_GOOGLE_API_KEY=AIzaSyD13DkeUGToNyyGUHALPJ1BQRFMpca_bm8
 REACT_APP_APP_NAME=Chat AI
 REACT_APP_VERSION=1.0.0
 ```
